@@ -6,6 +6,7 @@ import SplashScreen from './pages/SplashScreen';
 import Login from './pages/Login';
 import AppLayout from './layouts/AppLayout';
 
+
 import PickingPage from './pages/picking/PickingPage';
 import DespachoPage from './pages/despacho/DespachoPage';
 import RecepcionPage from './pages/recepcion/RecepcionPage';
