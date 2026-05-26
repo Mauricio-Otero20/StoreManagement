@@ -44,14 +44,19 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-// ── simAuth (solo para login) ─────────────────────────────────────────────────
+// ── simAuth (login real con fallback a mock) ─────────────────────────────────
 export const simAuth = {
   async login(cc) {
     try {
-      const res = await axiosInstance.post('/auth/mock-login', { cedula: cc });
+      const res = await axiosInstance.post('/auth/login', { cedula: cc });
       return res.data;
     } catch {
-      throw new Error('Backend not available');
+      try {
+        const res = await axiosInstance.post('/auth/mock-login', { cedula: cc });
+        return res.data;
+      } catch {
+        throw new Error('Backend not available');
+      }
     }
   },
 };
