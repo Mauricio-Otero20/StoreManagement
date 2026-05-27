@@ -29,6 +29,7 @@ export const minutosDesde = (fecha, fechaFin) => {
 export const formatEstadoPedido = (estado) => {
   const map = {
     ESPERANDO_RUTA: 'Esperando Ruta',
+    RUTA_ASIGNADA:  'Ruta Asignada',
     COMPROMETIDO:   'Comprometido',
     EN_PICKING:     'En Picking',
     DESPACHADO:     'Despachado',
