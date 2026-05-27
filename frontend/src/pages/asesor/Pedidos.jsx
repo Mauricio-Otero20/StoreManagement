@@ -153,7 +153,7 @@ export default function ListaPedidos() {
       </Box>
 
       {/* Tabla */}
-      <Box sx={{ borderRadius: '16px', overflow: 'hidden', border: `1px solid ${colors.border}`, background: colors.surface }}>
+      <Box sx={{ borderRadius: '16px', overflowX: 'auto', overflowY: 'hidden', border: `1px solid ${colors.border}`, background: colors.surface }}>
         {/* Header cols — campos reales de PedidoResumenDTO */}
         <Box sx={{ display: 'grid', gridTemplateColumns: '160px 1fr 130px 145px 80px 52px', gap: 1.5, px: 2.5, py: 1.5, background: colors.surfaceAlt, borderBottom: `1px solid ${colors.border}` }}>
           {['N° Pedido', 'Cliente', 'Creado', 'Estado', 'Und.', ''].map(h => (

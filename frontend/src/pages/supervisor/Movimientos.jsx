@@ -126,6 +126,7 @@ export default function Movimientos() {
           </Box>
         ) : (
           <>
+            <Box sx={{ overflowX: 'auto' }}>
             <Box sx={{ display: 'grid', gridTemplateColumns: '140px 100px 110px 1.2fr 120px 80px 130px', gap: 1.5, px: 2.5, py: 1.5, background: colors.surfaceAlt, borderBottom: `1px solid ${colors.border}` }}>
               {['Fecha/Hora', 'Tipo', 'SKU', 'Marca', 'Lote', 'Cantidad', 'Referencia'].map(h => (
                 <Typography key={h} sx={{ fontSize: 10.5, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</Typography>
@@ -165,6 +166,7 @@ export default function Movimientos() {
                   sx={{ '& .MuiPaginationItem-root': { color: colors.textSecondary }, '& .Mui-selected': { background: 'rgba(99,102,241,.18) !important', color: '#6366f1', fontWeight: 700 } }} />
               </Box>
             )}
+            </Box>
           </>
         )}
       </Box>

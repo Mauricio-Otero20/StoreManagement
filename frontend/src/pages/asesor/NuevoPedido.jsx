@@ -216,7 +216,7 @@ function PasoLineas({ lineas, onLineasChange, onNext, onBack, setStockError }) {
           <Typography sx={{ color: colors.textSecondary, fontSize: 13 }}>Agrega productos al pedido</Typography>
         </Box>
       ) : (
-        <Box sx={{ borderRadius: '12px', overflow: 'hidden', border: `1px solid ${colors.border}` }}>
+        <Box sx={{ borderRadius: '12px', overflowX: 'auto', overflowY: 'hidden', border: `1px solid ${colors.border}` }}>
           <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 120px 90px 80px 36px', gap: 1, px: 2, py: 1.25, background: colors.surfaceAlt }}>
             {['Producto', 'SKU', 'Cant.', 'Stock', ''].map(h => (
               <Typography key={h} sx={{ fontSize: 10.5, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</Typography>

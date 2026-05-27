@@ -461,6 +461,7 @@ export default function SupervisorManifiestos() {
           </Box>
         ) : (
           <>
+            <Box sx={{ overflowX: 'auto' }}>
             <Box sx={{ display: 'grid', gridTemplateColumns: '150px 1fr 1fr 120px 110px 110px 36px', gap: 1.5, px: 2.5, py: 1.5, background: colors.surfaceAlt, borderBottom: `1px solid ${colors.border}` }}>
               {['N° Manifiesto', 'Proveedor', 'Fecha Emisión', 'Líneas', 'Estado', 'Creado', ''].map(h => (
                 <Typography key={h} sx={{ fontSize: 10.5, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</Typography>
@@ -491,6 +492,7 @@ export default function SupervisorManifiestos() {
                 </Box>
               </Box>
             ))}
+            </Box>
           </>
         )}
       </Box>

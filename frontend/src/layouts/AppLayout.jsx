@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { Box, keyframes } from '@mui/material';
+import { Box, keyframes, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import { List } from 'phosphor-react';
 import Sidebar from '../components/Sidebar';
 import { ThemeContext } from '../context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
@@ -14,6 +16,9 @@ export default function AppLayout() {
   const token = localStorage.getItem('sm_token');
   const user  = localStorage.getItem('sm_user');
   const { mode } = useContext(ThemeContext);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (!token || !user) return <Navigate to="/login" replace />;
 
@@ -28,7 +33,7 @@ export default function AppLayout() {
         : 'linear-gradient(135deg, #f8fafc 0%, #eff6ff 60%, #f8fafc 100%)',
       transition: 'background 0.4s ease',
     }}>
-      <Sidebar />
+      <Sidebar open={sidebarOpen} onToggle={() => setSidebarOpen(s => !s)} />
 
       {/* Main content */}
       <Box sx={{
@@ -36,7 +41,6 @@ export default function AppLayout() {
         overflow: 'auto',
         p: { xs: 2, sm: 3, md: 3.5 },
         animation: `${fadeIn} 0.35s ease-out forwards`,
-        /* Custom scrollbar */
         '&::-webkit-scrollbar': { width: '6px' },
         '&::-webkit-scrollbar-track': { background: 'transparent' },
         '&::-webkit-scrollbar-thumb': {
@@ -44,6 +48,21 @@ export default function AppLayout() {
           borderRadius: '3px',
         },
       }}>
+        {isMobile && (
+          <IconButton
+            onClick={() => setSidebarOpen(s => !s)}
+            sx={{
+              mb: 1,
+              width: 36, height: 36,
+              borderRadius: '10px',
+              background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+              border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+              '&:hover': { background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)' },
+            }}
+          >
+            <List size={18} weight="bold" color={isDark ? '#e2e8f0' : '#475569'} />
+          </IconButton>
+        )}
         <Outlet />
       </Box>
 

@@ -206,7 +206,7 @@ export default function Inventario() {
           </Box>
 
           {/* Tabla lotes paginada */}
-          <Box sx={{ borderRadius: '16px', overflow: 'hidden', border: `1px solid ${colors.border}`, background: colors.surface }}>
+          <Box sx={{ borderRadius: '16px', overflowX: 'auto', overflowY: 'hidden', border: `1px solid ${colors.border}`, background: colors.surface }}>
             <Box sx={{ display: 'grid', gridTemplateColumns: '1.4fr 120px 90px 110px 110px 38px', gap: 1.5, px: 2.5, py: 1.5, background: colors.surfaceAlt, borderBottom: `1px solid ${colors.border}` }}>
               {['Código Lote', 'Vence', 'Stock', 'Días p/Vencer', 'Estado', ''].map(h => (
                 <Typography key={h} sx={{ fontSize: 10.5, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</Typography>

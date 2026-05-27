@@ -385,6 +385,7 @@ export default function DespachoPage() {
           </Box>
         ) : (
           <>
+            <Box sx={{ overflowX: 'auto' }}>
             <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr 80px 110px 110px 110px', gap: 1.5, px: 2.5, py: 1.5, background: colors.surfaceAlt, borderBottom: `1px solid ${colors.border}` }}>
               {['N° Pedido', 'Cliente', 'Und.', 'Tiempo', 'Estado', 'Acción'].map(h => (
                 <Typography key={h} sx={{ fontSize: 10.5, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</Typography>
@@ -415,6 +416,7 @@ export default function DespachoPage() {
                 </Box>
               );
             })}
+            </Box>
           </>
         )}
       </Box>

@@ -1,6 +1,6 @@
 import { useState, useEffect, memo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Box, Typography, Tooltip, Badge } from '@mui/material';
+import { Box, Typography, Tooltip, Badge, Drawer, useMediaQuery, useTheme } from '@mui/material';
 import {
   ChartBar, Package, ShoppingCart, UsersThree, Truck,
   Buildings, ClockCounterClockwise, Warning, FileText,
@@ -44,9 +44,11 @@ const ROL_ACCENT = {
   OPERARIO_DESPACHO:     '#10B981',
 };
 
-function Sidebar() {
+function Sidebar({ open, onToggle }) {
   const navigate  = useNavigate();
   const location  = useLocation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [collapsed, setCollapsed] = useState(false);
   const [carritoCount, setCarritoCount] = useState(0);
   const colors = useColors();
@@ -76,15 +78,15 @@ function Sidebar() {
 
   const isActive = (path) => location.pathname === path;
 
-  return (
+  const sidebarNav = (inDrawer) => (
     <Box sx={{
-      width: collapsed ? 72 : 256,
+      width: inDrawer ? 256 : collapsed ? 72 : 256,
       height: '100vh',
       background: colors.surface,
       borderRight: `1px solid ${colors.border}`,
       display: 'flex',
       flexDirection: 'column',
-      transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      transition: inDrawer ? 'none' : 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       overflow: 'hidden',
       flexShrink: 0,
       position: 'relative',
@@ -131,24 +133,26 @@ function Sidebar() {
           )}
         </Box>
 
-        <Tooltip title={collapsed ? 'Expandir' : 'Colapsar'} placement="right">
-          <Box
-            onClick={() => setCollapsed(c => !c)}
-            sx={{
-              width: 26, height: 26, borderRadius: '8px', flexShrink: 0,
-              background: colors.surfaceAlt,
-              border: `1px solid ${colors.border}`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              '&:hover': { background: `${accent}20`, borderColor: `${accent}60` },
-            }}>
-            {collapsed
-              ? <CaretRight size={12} color={colors.textSecondary} weight="bold" />
-              : <CaretLeft  size={12} color={colors.textSecondary} weight="bold" />
-            }
-          </Box>
-        </Tooltip>
+        {!inDrawer && (
+          <Tooltip title={collapsed ? 'Expandir' : 'Colapsar'} placement="right">
+            <Box
+              onClick={() => setCollapsed(c => !c)}
+              sx={{
+                width: 26, height: 26, borderRadius: '8px', flexShrink: 0,
+                background: colors.surfaceAlt,
+                border: `1px solid ${colors.border}`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                '&:hover': { background: `${accent}20`, borderColor: `${accent}60` },
+              }}>
+              {collapsed
+                ? <CaretRight size={12} color={colors.textSecondary} weight="bold" />
+                : <CaretLeft  size={12} color={colors.textSecondary} weight="bold" />
+              }
+            </Box>
+          </Tooltip>
+        )}
       </Box>
 
       {/* ── NAV ITEMS ── */}
@@ -271,5 +275,27 @@ function Sidebar() {
       </Box>
     </Box>
   );
+
+  if (isMobile) {
+    return (
+      <Drawer
+        variant="temporary"
+        open={open}
+        onClose={onToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          '& .MuiDrawer-paper': {
+            background: 'transparent',
+            borderRight: 'none',
+            boxShadow: 'none',
+          },
+        }}
+      >
+        {sidebarNav(true)}
+      </Drawer>
+    );
+  }
+
+  return sidebarNav(false);
 }
 export default memo(Sidebar);

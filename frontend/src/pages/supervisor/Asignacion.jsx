@@ -244,6 +244,7 @@ function ListaPedidos({ pedidos, activo, setActivo, emptyMsg }) {
   );
   return (
     <>
+      <Box sx={{ overflowX: 'auto' }}>
       <Box sx={{ display:'grid', gridTemplateColumns:'1fr 1.2fr 100px 110px 24px', gap:1.5, px:2.5, py:1.5, background: colors.surfaceAlt, borderBottom:`1px solid ${colors.border}` }}>
         {['Pedido','Cliente','Creado','Estado',''].map(h => (
           <Typography key={h} sx={{ fontSize:10.5, fontWeight:700, color: colors.textSecondary, textTransform:'uppercase', letterSpacing:'.07em' }}>{h}</Typography>
@@ -282,6 +283,7 @@ function ListaPedidos({ pedidos, activo, setActivo, emptyMsg }) {
           </Box>
         );
       })}
+      </Box>
     </>
   );
 }

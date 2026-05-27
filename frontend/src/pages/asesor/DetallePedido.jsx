@@ -247,7 +247,7 @@ export default function DetallePedido() {
         </Box>
 
         {/* Líneas */}
-        <Box sx={{ borderRadius: '14px', overflow: 'hidden', border: `1px solid ${colors.border}`, background: colors.surface }}>
+        <Box sx={{ borderRadius: '14px', overflowX: 'auto', overflowY: 'hidden', border: `1px solid ${colors.border}`, background: colors.surface }}>
           <Box sx={{ px: 2.5, py: 1.75, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${colors.border}`, background: colors.surfaceAlt }}>
             <Typography sx={{ fontSize: 13, fontWeight: 700, color: colors.text }}>Líneas del pedido</Typography>
             <Typography sx={{ fontSize: 12, color: colors.textSecondary }}>{lineas.length} producto(s)</Typography>

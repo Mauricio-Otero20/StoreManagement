@@ -295,7 +295,7 @@ function StepConfirmar({ carrito, cliente, onBack, onCreado }) {
       </Box>
 
       {/* Líneas */}
-      <Box sx={{ borderRadius: '12px', overflow: 'hidden', border: `1px solid ${colors.border}`, mb: 2 }}>
+      <Box sx={{ borderRadius: '12px', overflowX: 'auto', overflowY: 'hidden', border: `1px solid ${colors.border}`, mb: 2 }}>
         <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 100px 80px 80px', gap: 1, px: 2, py: 1.25, background: colors.surfaceAlt }}>
           {['Producto', 'Presentación', 'Unit.', 'Cant.'].map(h => <Typography key={h} sx={{ fontSize: 10, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</Typography>)}
         </Box>

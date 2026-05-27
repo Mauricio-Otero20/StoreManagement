@@ -134,6 +134,7 @@ export default function ExcepcionesPage() {
           </Box>
         ) : (
           <>
+            <Box sx={{ overflowX: 'auto' }}>
             <Box sx={{ display: 'grid', gridTemplateColumns: '100px 110px 110px 110px 80px 1fr 36px', gap: 1.5, px: 2.5, py: 1.5, background: colors.surfaceAlt, borderBottom: `1px solid ${colors.border}` }}>
               {['Fecha', 'Tipo', 'SKU', 'Lote', 'Cant.', 'Descripción', ''].map(h => (
                 <Typography key={h} sx={{ fontSize: 10.5, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</Typography>
@@ -166,6 +167,7 @@ export default function ExcepcionesPage() {
                   sx={{ '& .MuiPaginationItem-root': { color: colors.textSecondary }, '& .Mui-selected': { background: 'rgba(99,102,241,.18) !important', color: '#6366f1', fontWeight: 700 } }} />
               </Box>
             )}
+            </Box>
           </>
         )}
       </Box>
