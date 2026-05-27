@@ -8,7 +8,7 @@ import { MagnifyingGlass, Plus, Eye, FolderOpen, X } from 'phosphor-react';
 import { useColors } from '../../context/ThemeContext';
 import api from '../../lib/localApi';
 import StatusBadge from '../../components/common/StatusBadge';
-import { formatFecha, formatRelativo } from '../../utils/formatters';
+import { formatFechaHora } from '../../utils/formatters';
 
 // EstadoPedido enum exacto del backend
 const ESTADOS = ['ESPERANDO_RUTA', 'COMPROMETIDO', 'EN_PICKING', 'PICKUP', 'DESPACHADO', 'ENTREGADO'];
@@ -202,8 +202,7 @@ export default function ListaPedidos() {
               </Box>
               {/* fechaCreacion */}
               <Box sx={{ alignSelf: 'center' }}>
-                <Typography sx={{ fontSize: 12, color: colors.text }}>{formatFecha(p.fechaCreacion)}</Typography>
-                <Typography sx={{ fontSize: 10.5, color: colors.textSecondary }}>{formatRelativo(p.fechaCreacion)}</Typography>
+                <Typography sx={{ fontSize: 12, color: colors.text }}>{formatFechaHora(p.fechaCreacion)}</Typography>
               </Box>
               {/* estado */}
               <Box sx={{ alignSelf: 'center' }}>
