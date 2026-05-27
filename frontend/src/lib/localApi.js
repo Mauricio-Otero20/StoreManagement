@@ -18,7 +18,7 @@ const SIM_OPERARIOS_DESPACHO = SIM_USERS.filter(u => u.rol === 'OPERARIO_DESPACH
 const SIM_OPERARIOS_RECEPCION = SIM_USERS.filter(u => u.rol === 'OPERARIO_RECEPCION').map(u => ({ id: u.operarioId, nombre: u.nombre, cedula: u.cedula, rol: u.rol, activo: u.activo }));
 const SIM_SUPERVISORES = SIM_USERS.filter(u => u.rol === 'SUPERVISOR_INVENTARIO').map(u => ({ id: u.operarioId, nombre: u.nombre, cedula: u.cedula, rol: u.rol, activo: u.activo }));
 
-// ── Axios instance ────────────────────────────────────────────────────────────
+// ── Axios instance (general) ───────────────────────────────────────────────────
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30000,
@@ -38,21 +38,31 @@ axiosInstance.interceptors.response.use(
   err => {
     if (err.response?.status === 401) {
       ['sm_token', 'sm_user', 'sm_rol', 'sm_cedula', 'sm_operario_id'].forEach(k => localStorage.removeItem(k));
-      window.location.href = '/login';
+      window.dispatchEvent(new CustomEvent('auth:unauthorized'));
     }
     return Promise.reject(err);
   }
 );
 
+// ── Auth axios instance (short timeout: 5s) ────────────────────────────────────
+const authInstance = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 5000,
+  headers: { 'Content-Type': 'application/json' },
+});
+
 // ── simAuth (login real con fallback a mock) ─────────────────────────────────
 export const simAuth = {
   async login(cc) {
+    const controller = new AbortController();
     try {
-      const res = await axiosInstance.post('/auth/login', { cedula: cc });
+      const res = await authInstance.post('/auth/login', { cedula: cc }, { signal: controller.signal });
+      controller.abort();
       return res.data;
     } catch {
       try {
-        const res = await axiosInstance.post('/auth/mock-login', { cedula: cc });
+        const res = await authInstance.post('/auth/mock-login', { cedula: cc }, { signal: controller.signal });
+        controller.abort();
         return res.data;
       } catch {
         throw new Error('Backend not available');

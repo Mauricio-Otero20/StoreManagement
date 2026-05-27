@@ -8,7 +8,7 @@ import {
 import { useColors } from '../../context/ThemeContext';
 import api from '../../lib/localApi';
 import StatusBadge from '../../components/common/StatusBadge';
-import { formatFecha, formatFechaHora } from '../../utils/formatters';
+import { formatFecha, formatFechaHora, formatCOP } from '../../utils/formatters';
 
 /* ── Timeline de estados ──────────────────────────────────────────────────── */
 const ESTADOS_ORDEN = ['ESPERANDO_RUTA', 'COMPROMETIDO', 'EN_PICKING', 'DESPACHADO', 'ENTREGADO'];
@@ -275,6 +275,7 @@ export default function DetallePedido() {
           {[
             { l: 'Total solicitado',  v: `${totalSolicitado} und`, color: colors.text     },
             { l: 'Total confirmado',  v: `${totalConfirmado} und`, color: '#22c55e'       },
+            { l: 'Costo total',       v: formatCOP(pedido.costoTotal), color: '#f59e0b'   },
             { l: 'Peso logístico',    v: pedido.pesoLogisticoTotal ? `${pedido.pesoLogisticoTotal} kg` : '—', color: colors.text },
             { l: 'Tipo cumplimiento', v: pedido.tipoCumplimiento || '—', color: '#6366f1' },
           ].map(({ l, v, color }) => (

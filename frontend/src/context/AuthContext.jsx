@@ -20,6 +20,10 @@ export function AuthProvider({ children }) {
     }
 
     setLoading(false);
+
+    const onUnauthorized = () => logout();
+    window.addEventListener('auth:unauthorized', onUnauthorized);
+    return () => window.removeEventListener('auth:unauthorized', onUnauthorized);
   }, []);
 
   const login = (userData) => {
