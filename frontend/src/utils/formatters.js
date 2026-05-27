@@ -16,6 +16,18 @@ export const formatRelativo = (d) => {
   try { return formatDistanceToNow(new Date(d), { locale: es, addSuffix: true }); } catch { return '—'; }
 };
 
+/** Muestra "hace X min" si < 60 min, o solo fecha si ya pasó 1 hora */
+export const formatRelativoCorto = (d) => {
+  if (!d) return '—';
+  try {
+    const mins = differenceInMinutes(new Date(), new Date(d));
+    if (mins < 60) {
+      return formatDistanceToNow(new Date(d), { locale: es, addSuffix: true });
+    }
+    return format(new Date(d), 'dd/MM/yyyy', { locale: es });
+  } catch { return '—'; }
+};
+
 export const diasHastaVencer = (fechaVencimiento) => {
   if (!fechaVencimiento) return null;
   try { return differenceInDays(new Date(fechaVencimiento), new Date()); } catch { return null; }
