@@ -135,15 +135,15 @@ export default function ExcepcionesPage() {
         ) : (
           <>
             <Box sx={{ overflowX: 'auto' }}>
-            <Box sx={{ display: 'grid', gridTemplateColumns: '100px 110px 110px 110px 80px 1fr 36px', gap: 1.5, px: 2.5, py: 1.5, background: colors.surfaceAlt, borderBottom: `1px solid ${colors.border}` }}>
-              {['Fecha', 'Tipo', 'SKU', 'Lote', 'Cant.', 'Descripción', ''].map(h => (
+            <Box sx={{ display: 'grid', gridTemplateColumns: '100px 110px 110px 110px 80px 1fr 150px 36px', gap: 1.5, px: 2.5, py: 1.5, background: colors.surfaceAlt, borderBottom: `1px solid ${colors.border}` }}>
+              {['Fecha', 'Tipo', 'SKU', 'Lote', 'Cant.', 'Descripción', 'Operario', ''].map(h => (
                 <Typography key={h} sx={{ fontSize: 10.5, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</Typography>
               ))}
             </Box>
             {paginated.map((e, i) => {
               const cfg = TIPO_CONFIG[e.tipoExcepcion] || { label: e.tipoExcepcion, color: '#64748b', Icon: Warning };
               return (
-                <Box key={e.excepcionId || i} sx={{ display: 'grid', gridTemplateColumns: '100px 110px 110px 110px 80px 1fr 36px', gap: 1.5, px: 2.5, py: 1.75, borderTop: `1px solid ${colors.border}`, '&:hover': { background: `${colors.border}40` }, '&:last-child': { borderBottom: 'none' }, transition: 'background 0.15s', animation: `rowIn 0.3s ease-out ${i * 0.03}s both`, '@keyframes rowIn': { from: { opacity: 0, transform: 'translateX(-6px)' }, to: { opacity: 1, transform: 'translateX(0)' } } }}>
+                <Box key={e.excepcionId || i} sx={{ display: 'grid', gridTemplateColumns: '100px 110px 110px 110px 80px 1fr 150px 36px', gap: 1.5, px: 2.5, py: 1.75, borderTop: `1px solid ${colors.border}`, '&:hover': { background: `${colors.border}40` }, '&:last-child': { borderBottom: 'none' }, transition: 'background 0.15s', animation: `rowIn 0.3s ease-out ${i * 0.03}s both`, '@keyframes rowIn': { from: { opacity: 0, transform: 'translateX(-6px)' }, to: { opacity: 1, transform: 'translateX(0)' } } }}>
                   <Typography sx={{ fontSize: 12, color: colors.textSecondary, alignSelf: 'center' }}>{formatFecha(e.fechaRegistro)}</Typography>
                   <Box sx={{ alignSelf: 'center', display: 'flex', alignItems: 'center', gap: 0.75 }}>
                     <cfg.Icon size={13} weight="fill" color={cfg.color} />
@@ -155,6 +155,12 @@ export default function ExcepcionesPage() {
                   <Typography sx={{ fontSize: 12, color: colors.textSecondary, alignSelf: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {e.descripcion || '—'}
                   </Typography>
+                  <Box sx={{ alignSelf: 'center' }}>
+                    <Typography sx={{ fontSize: 12, color: colors.text, fontWeight: 600 }}>{e.operarioNombre || '—'}</Typography>
+                    {e.operarioCedula && (
+                      <Typography sx={{ fontSize: 10, color: colors.textSecondary }}>CC: {e.operarioCedula}</Typography>
+                    )}
+                  </Box>
                   <Box onClick={() => setDetalle(e)} sx={{ alignSelf: 'center', width: 30, height: 30, borderRadius: '8px', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', '&:hover': { background: 'rgba(99,102,241,0.18)' } }}>
                     <Eye size={14} weight="duotone" color="#6366f1" />
                   </Box>
@@ -193,10 +199,15 @@ export default function ExcepcionesPage() {
               <Box onClick={() => setDetalle(null)} sx={{ cursor: 'pointer', opacity: .6, '&:hover': { opacity: 1 } }}><X size={18} color={colors.textSecondary} /></Box>
             </DialogTitle>
             <DialogContent sx={{ pt: '8px !important', display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              {[['SKU', detalle.skuId], ['Código Lote', detalle.codigoLote], ['Cantidad Afectada', detalle.cantidadAfectada], ['Fecha', formatFecha(detalle.fechaRegistro)], ['Operario', detalle.operarioNombre || detalle.operarioId || '—']].map(([label, val]) => val && (
+              {[['SKU', detalle.skuId], ['Código Lote', detalle.codigoLote], ['Cantidad Afectada', detalle.cantidadAfectada], ['Fecha', formatFecha(detalle.fechaRegistro)], ['Operario', detalle.operarioNombre || '—']].map(([label, val]) => val && (
                 <Box key={label} sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
                   <Typography sx={{ fontSize: 12, color: colors.textSecondary, minWidth: 120 }}>{label}</Typography>
-                  <Typography sx={{ fontSize: 13, fontWeight: 600, color: colors.text, fontFamily: label === 'SKU' || label === 'Código Lote' ? 'monospace' : 'inherit' }}>{val}</Typography>
+                  <Box>
+                    <Typography sx={{ fontSize: 13, fontWeight: 600, color: colors.text, fontFamily: label === 'SKU' || label === 'Código Lote' ? 'monospace' : 'inherit' }}>{val}</Typography>
+                    {label === 'Operario' && detalle.operarioCedula && (
+                      <Typography sx={{ fontSize: 10.5, color: colors.textSecondary }}>CC: {detalle.operarioCedula}</Typography>
+                    )}
+                  </Box>
                 </Box>
               ))}
               {detalle.descripcion && (

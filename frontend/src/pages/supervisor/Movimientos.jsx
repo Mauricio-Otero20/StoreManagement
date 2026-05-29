@@ -127,7 +127,7 @@ export default function Movimientos() {
         ) : (
           <>
             <Box sx={{ overflowX: 'auto' }}>
-            <Box sx={{ display: 'grid', gridTemplateColumns: '140px 100px 110px 1.2fr 120px 80px 130px', gap: 1.5, px: 2.5, py: 1.5, background: colors.surfaceAlt, borderBottom: `1px solid ${colors.border}` }}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '140px 100px 110px 1fr 70px 80px 1.4fr', gap: 1.5, px: 2.5, py: 1.5, background: colors.surfaceAlt, borderBottom: `1px solid ${colors.border}` }}>
               {['Fecha/Hora', 'Tipo', 'SKU', 'Marca', 'Lote', 'Cantidad', 'Referencia'].map(h => (
                 <Typography key={h} sx={{ fontSize: 10.5, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{h}</Typography>
               ))}
@@ -140,7 +140,7 @@ export default function Movimientos() {
               const skuId      = m.producto?.skuId   || m.skuId       || '—';
               const marca      = m.producto?.marca    || m.marcaProducto || '—';
               return (
-                <Box key={m.movimientoId || m.id || i} sx={{ display: 'grid', gridTemplateColumns: '140px 100px 110px 1.2fr 120px 80px 130px', gap: 1.5, px: 2.5, py: 1.5, borderTop: `1px solid ${colors.border}`, borderLeft: `3px solid ${cfg.color}`, transition: 'background 0.15s', '&:hover': { background: `${colors.border}40` }, '&:last-child': { borderBottom: 'none' }, animation: `rowIn 0.3s ease-out ${Math.min(i, 10) * 0.03}s both`, '@keyframes rowIn': { from: { opacity: 0, transform: 'translateX(-4px)' }, to: { opacity: 1, transform: 'translateX(0)' } } }}>
+                <Box key={m.movimientoId || m.id || i} sx={{ display: 'grid', gridTemplateColumns: '140px 100px 110px 1fr 70px 80px 1.4fr', gap: 1.5, px: 2.5, py: 1.5, borderTop: `1px solid ${colors.border}`, borderLeft: `3px solid ${cfg.color}`, transition: 'background 0.15s', '&:hover': { background: `${colors.border}40` }, '&:last-child': { borderBottom: 'none' }, animation: `rowIn 0.3s ease-out ${Math.min(i, 10) * 0.03}s both`, '@keyframes rowIn': { from: { opacity: 0, transform: 'translateX(-4px)' }, to: { opacity: 1, transform: 'translateX(0)' } } }}>
                   <Typography sx={{ fontSize: 11.5, color: colors.textSecondary, alignSelf: 'center' }}>{formatFechaHora(m.fechaMovimiento)}</Typography>
                   <Box sx={{ alignSelf: 'center' }}>
                     <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, px: 1, py: 0.3, borderRadius: '6px', background: cfg.bg }}>
@@ -154,7 +154,7 @@ export default function Movimientos() {
                   <Typography sx={{ fontSize: 14, fontWeight: 800, color: cfg.color, alignSelf: 'center', letterSpacing: '-0.01em' }}>
                     {positivo ? `+${m.cantidad}` : m.cantidad}
                   </Typography>
-                  <Typography sx={{ fontSize: 11.5, color: '#6366f1', fontFamily: 'monospace', alignSelf: 'center', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <Typography sx={{ fontSize: 12, color: '#6366f1', fontFamily: 'monospace', alignSelf: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {m.tipoMovimiento === 'ENTRADA'
                       ? (m.numeroRecepcion ? `N° Recepción: ${m.numeroRecepcion}` : m.observaciones || '—')
                       : (m.numeroPedido ? `Pedido: ${m.numeroPedido}` : m.pedidoId || m.observaciones?.slice(0,20) || '—')}
