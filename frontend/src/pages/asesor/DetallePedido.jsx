@@ -65,8 +65,8 @@ function LineaRow({ linea, idx, hasLotes }) {
       <Box
         onClick={() => hasLotes && setOpen(o => !o)}
         sx={{
-          display: 'grid', gridTemplateColumns: '1fr 100px 110px 110px 36px',
-          gap: 1.5, px: 2.5, py: 1.5,
+            display: 'grid', gridTemplateColumns: '1fr 100px 110px 36px',
+            gap: 1.5, px: 2.5, py: 1.5,
           borderTop: `1px solid ${colors.border}`,
           transition: 'background 0.15s',
           cursor: hasLotes ? 'pointer' : 'default',
@@ -81,15 +81,6 @@ function LineaRow({ linea, idx, hasLotes }) {
         <Typography sx={{ fontSize: 13, fontWeight: 700, color: linea.cantidadConfirmada != null ? '#22c55e' : colors.textSecondary, alignSelf: 'center' }}>
           {linea.cantidadConfirmada ?? '—'}
         </Typography>
-        <Box sx={{ alignSelf: 'center' }}>
-          {linea.tipoCumplimiento && (
-            <Box sx={{ px: 1, py: 0.3, borderRadius: '6px', background: linea.tipoCumplimiento === 'TOTAL' ? 'rgba(34,197,94,0.1)' : 'rgba(245,158,11,0.1)', display: 'inline-block' }}>
-              <Typography sx={{ fontSize: 10, fontWeight: 700, color: linea.tipoCumplimiento === 'TOTAL' ? '#22c55e' : '#f59e0b' }}>
-                {linea.tipoCumplimiento}
-              </Typography>
-            </Box>
-          )}
-        </Box>
         <Box sx={{ alignSelf: 'center', display: 'flex', justifyContent: 'center' }}>
           {hasLotes && (open ? <CaretUp size={14} color={colors.textSecondary} /> : <CaretDown size={14} color={colors.textSecondary} />)}
         </Box>
@@ -252,8 +243,8 @@ export default function DetallePedido() {
             <Typography sx={{ fontSize: 13, fontWeight: 700, color: colors.text }}>Líneas del pedido</Typography>
             <Typography sx={{ fontSize: 12, color: colors.textSecondary }}>{lineas.length} producto(s)</Typography>
           </Box>
-          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 100px 110px 110px 36px', gap: 1.5, px: 2.5, py: 1.25, background: colors.surfaceAlt }}>
-            {['Producto', 'Solicitado', 'Confirmado', 'Cumplimiento', ''].map(h => (
+          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 100px 110px 36px', gap: 1.5, px: 2.5, py: 1.25, background: colors.surfaceAlt }}>
+            {['Producto', 'Solicitado', 'Confirmado', ''].map(h => (
               <Typography key={h} sx={{ fontSize: 10.5, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</Typography>
             ))}
           </Box>

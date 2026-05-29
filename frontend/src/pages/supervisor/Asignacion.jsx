@@ -6,7 +6,7 @@ import {
 import {
   UsersThree, Package, ArrowRight, CheckCircle, Warning,
   ArrowsClockwise, Bag, Truck, ClipboardText, Checks,
-  HourglassHigh,
+  HourglassHigh, MapPin,
 } from 'phosphor-react';
 import { useColors } from '../../context/ThemeContext';
 import api from '../../lib/localApi';
@@ -114,7 +114,7 @@ function PanelAsignacion({ pedido, etapa, pickOps, despOps, onAsignado }) {
       // Construir request según lo que acepta el backend: AsignarPedidoRequest
       // Solo enviamos el campo que corresponde a esta etapa
       const body = {};
-      if (etapa === 'ESPERANDO_RUTA' || etapa === 'COMPROMETIDO') {
+      if (etapa === 'COMPROMETIDO') {
         if (!pickingId) { setError('Selecciona un operario de picking'); setSaving(false); return; }
         body.operarioPickingId  = pickingId;
         body.operarioDespachoId = pedido.operarioDespachoId || null;
@@ -153,7 +153,7 @@ function PanelAsignacion({ pedido, etapa, pickOps, despOps, onAsignado }) {
     </Box>
   );
 
-  const puedeAsignar = (etapa === 'ESPERANDO_RUTA' || etapa === 'COMPROMETIDO') && pickingId ||
+  const puedeAsignar = etapa === 'COMPROMETIDO' && pickingId ||
                        etapa === 'PICKUP' && despachoId;
 
   return (
@@ -184,6 +184,16 @@ function PanelAsignacion({ pedido, etapa, pickOps, despOps, onAsignado }) {
         <Box sx={{ p:'12px 16px', borderRadius:'10px', background: colors.surfaceAlt, border:`1px solid ${colors.border}`, textAlign:'center' }}>
           <Typography sx={{ fontSize:13, color: colors.textSecondary }}>
             Este pedido está <strong>esperando ruta</strong>. <br/>
+            Podrás asignar un operario cuando pase a estado comprometido.
+          </Typography>
+        </Box>
+      )}
+
+      {/* RUTA_ASIGNADA: solo lectura */}
+      {etapa === 'RUTA_ASIGNADA' && (
+        <Box sx={{ p:'12px 16px', borderRadius:'10px', background: colors.surfaceAlt, border:`1px solid ${colors.border}`, textAlign:'center' }}>
+          <Typography sx={{ fontSize:13, color: colors.textSecondary }}>
+            El pedido tiene <strong>ruta asignada</strong>. <br/>
             Podrás asignar un operario cuando pase a estado comprometido.
           </Typography>
         </Box>
@@ -290,12 +300,13 @@ function ListaPedidos({ pedidos, activo, setActivo, emptyMsg }) {
 
 /* ── Etapas config ──────────────────────────────────────────────────────── */
 const ETAPAS = [
-  { key:'ESPERANDO_RUTA', label:'Esp. Ruta',   color:'#64748b', Icon:HourglassHigh,  desc:'Pendiente de ruta — asignar picking' },
-  { key:'COMPROMETIDO',   label:'Comprometido', color:'#f59e0b', Icon:ClipboardText,  desc:'Inventario comprometido — asignar picking' },
-  { key:'EN_PICKING',     label:'En Picking',   color:'#3b82f6', Icon:Bag,            desc:'En recolección' },
-  { key:'PICKUP',         label:'Pickup',       color:'#10b981', Icon:Package,        desc:'Picking finalizado — asignar despacho' },
-  { key:'DESPACHADO',     label:'Despachado',   color:'#8b5cf6', Icon:Truck,          desc:'En camino al cliente' },
-  { key:'ENTREGADO',      label:'Entregado',    color:'#22c55e', Icon:Checks,         desc:'Pedido completado' },
+  { key:'ESPERANDO_RUTA', label:'Esp. Ruta',     color:'#64748b', Icon:HourglassHigh,  desc:'Pendiente de ruta' },
+  { key:'RUTA_ASIGNADA',  label:'Ruta Asignada', color:'#8b5cf6', Icon:MapPin,         desc:'Ruta asignada — asignar picking' },
+  { key:'COMPROMETIDO',   label:'Comprometido',  color:'#f59e0b', Icon:ClipboardText,  desc:'Inventario comprometido — asignar picking' },
+  { key:'EN_PICKING',     label:'En Picking',    color:'#3b82f6', Icon:Bag,            desc:'En recolección' },
+  { key:'PICKUP',         label:'Pickup',        color:'#10b981', Icon:Package,        desc:'Picking finalizado — asignar despacho' },
+  { key:'DESPACHADO',     label:'Despachado',    color:'#8b5cf6', Icon:Truck,          desc:'En camino al cliente' },
+  { key:'ENTREGADO',      label:'Entregado',     color:'#22c55e', Icon:Checks,         desc:'Pedido completado' },
 ];
 
 /* ── MAIN ────────────────────────────────────────────────────────────────── */
@@ -303,7 +314,7 @@ export default function Asignacion() {
   const colors = useColors();
 
   // pedidos por estado: se cargan independientemente
-  const [groups, setGroups]     = useState({ ESPERANDO_RUTA:[], COMPROMETIDO:[], EN_PICKING:[], PICKUP:[], DESPACHADO:[], ENTREGADO:[] });
+  const [groups, setGroups]     = useState({ ESPERANDO_RUTA:[], RUTA_ASIGNADA:[], COMPROMETIDO:[], EN_PICKING:[], PICKUP:[], DESPACHADO:[], ENTREGADO:[] });
   const [pickOps, setPickOps]   = useState([]);
   const [despOps, setDespOps]   = useState([]);
   const [loading, setLoading]   = useState(true);
@@ -327,7 +338,7 @@ export default function Asignacion() {
       ]);
 
       const todos = todosRes.content || [];
-      const newGroups = { ESPERANDO_RUTA:[], COMPROMETIDO:[], EN_PICKING:[], PICKUP:[], DESPACHADO:[], ENTREGADO:[] };
+      const newGroups = { ESPERANDO_RUTA:[], RUTA_ASIGNADA:[], COMPROMETIDO:[], EN_PICKING:[], PICKUP:[], DESPACHADO:[], ENTREGADO:[] };
       
       const mapPicking = new Map(pickingE.map(p => [String(p.pedidoId), p]));
       const mapDespacho = new Map(despachoE.map(p => [String(p.pedidoId), p]));
@@ -388,7 +399,7 @@ export default function Asignacion() {
         <Box>
           <Typography sx={{ fontSize:24, fontWeight:800, color: colors.text, letterSpacing:'-0.03em' }}>Asignación de Operarios</Typography>
           <Typography sx={{ fontSize:13, color: colors.textSecondary, mt:.5 }}>
-            Flujo: <strong style={{ color:'#64748b' }}>Esp. Ruta</strong> → <strong style={{ color:'#f59e0b' }}>Comprometido</strong> → <strong style={{ color:'#3b82f6' }}>Picking</strong> → <strong style={{ color:'#8b5cf6' }}>Despacho</strong> → <strong style={{ color:'#22c55e' }}>Entregado</strong>
+            Flujo: <strong style={{ color:'#64748b' }}>Esp. Ruta</strong> → <strong style={{ color:'#8b5cf6' }}>Ruta Asig.</strong> → <strong style={{ color:'#f59e0b' }}>Comprometido</strong> → <strong style={{ color:'#3b82f6' }}>Picking</strong> → <strong style={{ color:'#8b5cf6' }}>Despacho</strong> → <strong style={{ color:'#22c55e' }}>Entregado</strong>
           </Typography>
         </Box>
         <Button onClick={fetchAll} disabled={loading} startIcon={<ArrowsClockwise size={15} weight="bold" className={loading ? 'spin' : ''}/>} variant="outlined"
