@@ -26,6 +26,7 @@ import AsesorDetallePedido from './pages/asesor/DetallePedido';
 import AsesorCatalogo from './pages/asesor/Catalogo';
 import AsesorCarrito from './pages/asesor/CarritoPage';
 
+
 export default function App() {
   return (
     <BrowserRouter>
