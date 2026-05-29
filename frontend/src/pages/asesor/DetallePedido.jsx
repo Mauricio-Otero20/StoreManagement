@@ -219,15 +219,25 @@ export default function DetallePedido() {
         <InfoCard title="Datos del cliente" Icon={User} iconColor="#3b82f6">
           <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 1.5 }}>
             {[
-              { l: 'Nombre',    v: pedido.clienteNombre || pedido.cliente?.nombre },
-              { l: 'Cédula',    v: pedido.clienteCc     || pedido.cliente?.cedula },
-              { l: 'Dirección', v: pedido.direccionEntrega || pedido.cliente?.direccion || '—' },
-            ].map(({ l, v }) => (
-              <Box key={l}>
-                <Typography sx={{ fontSize: 10, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{l}</Typography>
-                <Typography sx={{ fontSize: 13, color: colors.text, fontWeight: 500 }}>{v || '—'}</Typography>
-              </Box>
-            ))}
+              { l: 'Nombre',    v: pedido.clienteNombre },
+              { l: 'Cédula',    v: pedido.clienteCc },
+              { l: 'Dirección', v: pedido.direccionEntrega || '—' },
+            ].map(({ l, v }) => {
+              const noDisponible = v === 'Cliente no disponible';
+              return (
+                <Box key={l}>
+                  <Typography sx={{ fontSize: 10, fontWeight: 700, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{l}</Typography>
+                  {noDisponible ? (
+                    <Box sx={{ mt: 0.25, display: 'inline-flex', alignItems: 'center', gap: 0.75, px: 1.25, py: 0.35, borderRadius: '8px', background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.25)' }}>
+                      <Warning size={13} weight="fill" color="#f59e0b" />
+                      <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#f59e0b' }}>{v}</Typography>
+                    </Box>
+                  ) : (
+                    <Typography sx={{ fontSize: 13, color: colors.text, fontWeight: 500, mt: 0.25 }}>{v || '—'}</Typography>
+                  )}
+                </Box>
+              );
+            })}
           </Box>
         </InfoCard>
 

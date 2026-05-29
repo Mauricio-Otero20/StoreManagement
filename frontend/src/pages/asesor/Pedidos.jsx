@@ -4,7 +4,7 @@ import {
   Box, Typography, TextField, Button, Select, MenuItem,
   CircularProgress, InputAdornment, Skeleton, Pagination, Alert, Snackbar
 } from '@mui/material';
-import { MagnifyingGlass, Plus, Eye, FolderOpen, X } from 'phosphor-react';
+import { MagnifyingGlass, Plus, Eye, FolderOpen, X, Warning } from 'phosphor-react';
 import { useColors } from '../../context/ThemeContext';
 import api from '../../lib/localApi';
 import StatusBadge from '../../components/common/StatusBadge';
@@ -195,9 +195,16 @@ export default function ListaPedidos() {
               </Typography>
               {/* clienteNombre + clienteCc — campos reales de PedidoResumenDTO */}
               <Box sx={{ alignSelf: 'center', minWidth: 0 }}>
-                <Typography sx={{ fontSize: 13, fontWeight: 600, color: colors.text, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {p.clienteNombre || '—'}
-                </Typography>
+                {p.clienteNombre === 'Cliente no disponible' ? (
+                  <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, px: 1, py: 0.3, borderRadius: '6px', background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.2)' }}>
+                    <Warning size={12} weight="fill" color="#f59e0b" />
+                    <Typography sx={{ fontSize: 12, fontWeight: 600, color: '#f59e0b', whiteSpace: 'nowrap' }}>{p.clienteNombre}</Typography>
+                  </Box>
+                ) : (
+                  <Typography sx={{ fontSize: 13, fontWeight: 600, color: colors.text, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {p.clienteNombre || '—'}
+                  </Typography>
+                )}
                 <Typography sx={{ fontSize: 11, color: colors.textSecondary }}>CC: {p.clienteCc || '—'}</Typography>
               </Box>
               {/* fechaCreacion */}

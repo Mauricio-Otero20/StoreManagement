@@ -71,7 +71,14 @@ function PedidoInfoCard({ pedido }) {
       <Box sx={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:1.5, mb:1.5 }}>
         <Box>
           <Typography sx={{ fontSize:10, fontWeight:700, color: colors.textSecondary, textTransform:'uppercase' }}>Cliente</Typography>
-          <Typography sx={{ fontSize:13, fontWeight:600, color: colors.text }}>{pedido.clienteNombre || '—'}</Typography>
+          {pedido.clienteNombre === 'Cliente no disponible' ? (
+            <Box sx={{ mt:0.25, display:'inline-flex', alignItems:'center', gap:0.5, px:1, py:0.3, borderRadius:'6px', background:'rgba(245,158,11,0.12)', border:'1px solid rgba(245,158,11,0.2)' }}>
+              <Warning size={12} weight="fill" color="#f59e0b" />
+              <Typography sx={{ fontSize:12, fontWeight:600, color:'#f59e0b' }}>{pedido.clienteNombre}</Typography>
+            </Box>
+          ) : (
+            <Typography sx={{ fontSize:13, fontWeight:600, color: colors.text }}>{pedido.clienteNombre || '—'}</Typography>
+          )}
         </Box>
         <Box>
           <Typography sx={{ fontSize:10, fontWeight:700, color: colors.textSecondary, textTransform:'uppercase' }}>Dirección</Typography>
@@ -282,7 +289,14 @@ function ListaPedidos({ pedidos, activo, setActivo, emptyMsg }) {
               {(p.operarioPickingId || p.operarioDespachoId) && <Typography sx={{ fontSize:10, color:'#22c55e', fontWeight:600 }}>Asignado</Typography>}
             </Box>
             <Box sx={{ alignSelf:'center' }}>
-              <Typography sx={{ fontSize:12.5, color: colors.textSecondary, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{p.clienteNombre || p.clienteCc || '—'}</Typography>
+              {p.clienteNombre === 'Cliente no disponible' ? (
+                <Box sx={{ display:'inline-flex', alignItems:'center', gap:0.4, px:0.75, py:0.25, borderRadius:'5px', background:'rgba(245,158,11,0.1)', border:'1px solid rgba(245,158,11,0.2)' }}>
+                  <Warning size={10} weight="fill" color="#f59e0b" />
+                  <Typography sx={{ fontSize:11, fontWeight:600, color:'#f59e0b' }}>{p.clienteNombre}</Typography>
+                </Box>
+              ) : (
+                <Typography sx={{ fontSize:12.5, color: colors.textSecondary, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{p.clienteNombre || p.clienteCc || '—'}</Typography>
+              )}
               {p.totalUnidades !== undefined && <Typography sx={{ fontSize: 10, color: '#8b5cf6', fontWeight: 600 }}>{p.totalUnidades} und · {p.cantidadLineas} líns</Typography>}
             </Box>
             <Typography sx={{ fontSize:11.5, color: colors.textSecondary, alignSelf:'center' }}>{formatFecha(p.fechaCreacion)}</Typography>
