@@ -155,7 +155,9 @@ export default function Movimientos() {
                     {positivo ? `+${m.cantidad}` : m.cantidad}
                   </Typography>
                   <Typography sx={{ fontSize: 11.5, color: '#6366f1', fontFamily: 'monospace', alignSelf: 'center', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {m.numeroPedido || m.pedidoId || m.recepcionId || m.observaciones?.slice(0,20) || '—'}
+                    {m.tipoMovimiento === 'ENTRADA'
+                      ? (m.numeroRecepcion ? `N° Recepción: ${m.numeroRecepcion}` : m.observaciones || '—')
+                      : (m.numeroPedido ? `Pedido: ${m.numeroPedido}` : m.pedidoId || m.observaciones?.slice(0,20) || '—')}
                   </Typography>
                 </Box>
               );
