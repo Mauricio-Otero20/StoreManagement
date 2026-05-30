@@ -59,7 +59,10 @@ export const simAuth = {
       const res = await authInstance.post('/auth/login', { cedula: cc }, { signal: controller.signal });
       controller.abort();
       return res.data;
-    } catch {
+    } catch (err) {
+      if (err?.response) {
+        throw err;
+      }
       try {
         const res = await authInstance.post('/auth/mock-login', { cedula: cc }, { signal: controller.signal });
         controller.abort();
