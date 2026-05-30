@@ -394,7 +394,10 @@ export default function RecepcionPage() {
                         {(detailData?.lineas || []).map((d, i) => (
                           <Paper key={i} elevation={0} sx={{ p: 1.5, borderRadius: '12px', border: `1px solid ${colors.border}`, mb: 1 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
-                               <Typography sx={{ fontSize: 13, fontWeight: 800, color: colors.text }}>{d.skuId}</Typography>
+                               <Box>
+                                 <Typography sx={{ fontSize: 13, fontWeight: 800, color: colors.text }}>{d.marca} {d.presentacion}{d.contenidoMl ? ` · ${d.contenidoMl} ml` : ''}</Typography>
+                                 <Typography sx={{ fontSize: 11, color: colors.textSecondary }}>{d.skuId}</Typography>
+                               </Box>
                             </Box>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                               <Typography sx={{ fontSize: 11, color: colors.textSecondary }}>Esp: {d.cantidadEsperada}</Typography>

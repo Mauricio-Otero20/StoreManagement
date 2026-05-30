@@ -75,11 +75,6 @@ function LineaForm({ linea, idx, onChange, onRemove, productos, disabled, cantMa
             </Avatar>
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
               <Typography sx={{ fontSize: 11, fontWeight: 900, color: colors.text, textTransform: 'uppercase' }}>Ingreso SKU</Typography>
-              {linea.marca && (
-                <Typography sx={{ fontSize: 12, color: colors.textSecondary }}>
-                  {linea.marca}{linea.presentacion ? ` ${linea.presentacion}` : ''}{linea.contenidoMl ? ` · ${linea.contenidoMl} ml` : ''} ({linea.skuId})
-                </Typography>
-              )}
             {critico && !vencido && <Chip label="CRÍTICO" size="small" sx={{ height: 18, fontSize: 8, fontWeight: 800, background: '#fffbeb', color: '#92400e' }} />}
             {vencido && <Chip label="VENCIDO" size="small" sx={{ height: 18, fontSize: 8, fontWeight: 800, background: '#fef2f2', color: '#b91c1c' }} />}
           </Box>
