@@ -301,7 +301,7 @@ function StepConfirmar({ carrito, cliente, onBack, onCreado }) {
           <Box sx={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(245,158,11,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><User size={17} weight="duotone" color="#f59e0b" /></Box>
           <Box>
             <Typography sx={{ fontSize: 14, fontWeight: 700, color: colors.text }}>{cliente.nombre}</Typography>
-            <Typography sx={{ fontSize: 12, color: colors.textSecondary }}>CC/NIT: {cliente.cc}</Typography>
+            <Typography sx={{ fontSize: 12, color: colors.textSecondary }}>CC/NIT: {cliente.cc || cliente.cedula}</Typography>
           </Box>
         </Box>
       </Box>
