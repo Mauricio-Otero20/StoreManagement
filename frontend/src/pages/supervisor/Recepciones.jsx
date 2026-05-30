@@ -12,7 +12,7 @@ import {
 import { useColors } from '../../context/ThemeContext';
 import api from '../../lib/localApi';
 import { formatFecha, formatRelativo } from '../../utils/formatters';
-import { MOCK_USERS } from '../../utils/constants';
+
 
 /* ── Estado config ─────────────────────────────────────────────────────────── */
 const ESTADO_CONFIG = {
@@ -270,11 +270,7 @@ function DetalleManifiestoModal({ open, manifiesto, onClose }) {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.25 }}>
                   <User size={13} color="#22c55e" />
                   <Typography sx={{ fontSize: 13, fontWeight: 600, color: colors.text }}>
-                    {(() => {
-                      const id = String(recepcion.operarioId ?? '');
-                      const op = MOCK_USERS.find(u => String(u.operarioId) === id || String(u.id) === id);
-                      return op ? `${op.nombre}${op.cedula ? ` — CC ${op.cedula}` : ''}` : id || '—';
-                    })()}
+                    {recepcion.operarioNombre ? `${recepcion.operarioNombre}${recepcion.operarioCedula ? ` — CC ${recepcion.operarioCedula}` : ''}` : String(recepcion.operarioId ?? '') || '—'}
                   </Typography>
                 </Box>
               </Box>

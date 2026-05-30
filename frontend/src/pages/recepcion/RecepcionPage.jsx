@@ -83,7 +83,7 @@ export default function RecepcionPage() {
   const [manifestTab, setManifestTab] = useState(0); 
   
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState({ manifiestos: [], recepciones: [], operarios: [] });
+  const [data, setData] = useState({ manifiestos: [], recepciones: [] });
   const [selectedItem, setSelectedItem] = useState(null);
   const [detailData, setDetailData] = useState(null);
   const [loadingDetail, setLoadingDetail] = useState(false);
@@ -100,10 +100,9 @@ export default function RecepcionPage() {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const [manifiestos, recepciones, operarios] = await Promise.all([
+      const [manifiestos, recepciones] = await Promise.all([
         api.manifiestos.listar({ incluirHistorico: true }),
-        api.recepciones.listar(),
-        api.operarios.listarTodos()
+        api.recepciones.listar()
       ]);
       
       const manifList = Array.isArray(manifiestos) ? manifiestos : [];
@@ -111,8 +110,7 @@ export default function RecepcionPage() {
 
       setData({
         manifiestos: manifList,
-        recepciones: recepList.sort((a,b) => new Date(b.fechaRecepcion) - new Date(a.fechaRecepcion)),
-        operarios: Array.isArray(operarios) ? operarios : []
+        recepciones: recepList.sort((a,b) => new Date(b.fechaRecepcion) - new Date(a.fechaRecepcion))
       });
     } catch (err) {
       setError('Error al sincronizar datos de recepción');
@@ -349,7 +347,7 @@ export default function RecepcionPage() {
 
                     <Box sx={{ textAlign: 'right', pr: 1 }}>
                       <Typography sx={{ fontSize: 12, fontWeight: 800, color: colors.text }}>
-                        {data.operarios.find(o => String(o.id ?? o.operarioId ?? '') === String(r.operarioId ?? ''))?.nombre?.substring(0, 8) || String(r.operarioId ?? '').substring(0, 5)}
+                        {r.operarioNombre?.substring(0, 8) || String(r.operarioId ?? '').substring(0, 5)}
                       </Typography>
                     </Box>
                     <ArrowRight size={16} />
@@ -450,10 +448,10 @@ export default function RecepcionPage() {
                             <Typography sx={{ fontSize: 12, fontWeight: 600, color: colors.textSecondary }}>Operario:</Typography>
                             <Box sx={{ textAlign: 'right' }}>
                               <Typography sx={{ fontSize: 12, fontWeight: 800 }}>
-                                {data.operarios.find(o => String(o.id ?? o.operarioId ?? '') === String(selectedItem.operarioId ?? ''))?.nombre || 'Desconocido'}
+                                {selectedItem.operarioNombre || 'Desconocido'}
                               </Typography>
                               <Typography sx={{ fontSize: 10, color: colors.textSecondary }}>
-                                CC: {data.operarios.find(o => String(o.id ?? o.operarioId ?? '') === String(selectedItem.operarioId ?? ''))?.cedula || '—'}
+                                CC: {selectedItem.operarioCedula || '—'}
                               </Typography>
                             </Box>
                           </Box>
