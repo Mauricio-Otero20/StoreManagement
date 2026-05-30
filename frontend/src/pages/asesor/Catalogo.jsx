@@ -58,7 +58,7 @@ function ProductoCard({ producto, enCarrito, onToggle }) {
           {producto.marca}
         </Typography>
         <Typography sx={{ fontSize: 12.5, color: colors.textSecondary }}>
-          {producto.presentacion}
+          {producto.presentacion}{producto.contenidoMl ? ` · ${producto.contenidoMl} ml` : ''}
         </Typography>
       </Box>
 

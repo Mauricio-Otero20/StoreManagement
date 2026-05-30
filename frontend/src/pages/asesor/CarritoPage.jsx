@@ -16,10 +16,11 @@ function StepCantidades({ carrito, setCarrito, onNext, onBack }) {
   const navigate = useNavigate();
 
   const setQty = (skuId, qty, stock) => {
-    if (qty < 1) return;
-    if (qty > stock) return; // Bloqueo estricto
+    if (qty < 1 || qty > stock) return;
     setCarrito(prev => prev.map(i => i.skuId === skuId ? { ...i, qty } : i));
   };
+
+  const [editQty, setEditQty] = useState({});
 
   const removeItem = (skuId) => {
     const next = carrito.filter(i => i.skuId !== skuId);
@@ -98,8 +99,19 @@ function StepCantidades({ carrito, setCarrito, onNext, onBack }) {
                 <TextField
                   size="small"
                   type="number"
-                  value={item.qty}
-                  onChange={(e) => setQty(item.skuId, parseInt(e.target.value) || 1, item.stockDisponible)}
+                  value={editQty[item.skuId] ?? item.qty}
+                  onChange={(e) => setEditQty(prev => ({ ...prev, [item.skuId]: e.target.value }))}
+                  onBlur={(e) => {
+                    const v = parseInt(e.target.value);
+                    if (isNaN(v) || v < 1) {
+                      setQty(item.skuId, 1, item.stockDisponible);
+                    } else if (v > item.stockDisponible) {
+                      setQty(item.skuId, item.stockDisponible, item.stockDisponible);
+                    } else {
+                      setQty(item.skuId, v, item.stockDisponible);
+                    }
+                    setEditQty(prev => ({ ...prev, [item.skuId]: undefined }));
+                  }}
                   inputProps={{ min: 1, max: item.stockDisponible, style: { textAlign: 'center', fontWeight: 800, fontSize: 16 } }}
                   sx={{ width: 60, '& .MuiInputBase-input': { p: '4px' } }}
                 />

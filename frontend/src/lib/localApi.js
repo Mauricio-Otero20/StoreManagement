@@ -299,7 +299,7 @@ api.despacho.getMisPedidos  = withCache(api.despacho.getMisPedidos,  'despacho.g
 
 /* ── Mutation invalidation ────────────────────────────────────────────────── */
 const _crearPedido = api.pedidos.crear;
-api.pedidos.crear = (...args) => _crearPedido(...args).then(r => { invalidateCache('pedidos.'); return r; });
+api.pedidos.crear = (...args) => _crearPedido(...args).then(r => { invalidateCache('pedidos.'); invalidateCache('productos.'); return r; });
 
 const _asignarPedido = api.pedidos.asignar;
 api.pedidos.asignar = (...args) => _asignarPedido(...args).then(r => { invalidateCache('pedidos.'); return r; });

@@ -135,7 +135,7 @@ function PasoLineas({ lineas, onLineasChange, onNext, onBack, setStockError }) {
   const colors = useColors();
   const [productos, setProductos] = useState([]);
   const [selProd, setSelProd]     = useState(null);
-  const [cantidad, setCantidad]   = useState(1);
+  const [cantidad, setCantidad]   = useState('');
   const [errLinea, setErrLinea]   = useState('');
   const [checking, setChecking]   = useState(false);
 
@@ -145,10 +145,11 @@ function PasoLineas({ lineas, onLineasChange, onNext, onBack, setStockError }) {
 
   const agregar = () => {
     if (!selProd) return;
-    if (cantidad < 1) { setErrLinea('La cantidad debe ser mayor a 0'); return; }
+    const qty = Number(cantidad);
+    if (!cantidad || qty < 1) { setErrLinea('La cantidad debe ser mayor a 0'); return; }
     if (lineas.find(l => l.skuId === selProd.skuId)) { setErrLinea('Producto ya agregado'); return; }
-    onLineasChange([...lineas, { skuId: selProd.skuId, marca: selProd.marca, presentacion: selProd.presentacion, stockDisponible: selProd.stockDisponible, cantidadSolicitada: Number(cantidad) }]);
-    setSelProd(null); setCantidad(1); setErrLinea('');
+    onLineasChange([...lineas, { skuId: selProd.skuId, marca: selProd.marca, presentacion: selProd.presentacion, contenidoMl: selProd.contenidoMl, stockDisponible: selProd.stockDisponible, cantidadSolicitada: qty }]);
+    setSelProd(null); setCantidad(''); setErrLinea('');
   };
 
   const eliminar = (skuId) => onLineasChange(lineas.filter(l => l.skuId !== skuId));
@@ -190,7 +191,7 @@ function PasoLineas({ lineas, onLineasChange, onNext, onBack, setStockError }) {
           options={productos}
           value={selProd}
           onChange={(_, v) => { setSelProd(v); setErrLinea(''); }}
-          getOptionLabel={o => `${o.marca} ${o.presentacion} (${o.skuId})`}
+          getOptionLabel={o => `${o.marca} ${o.presentacion}${o.contenidoMl ? ` ${o.contenidoMl}ml` : ''} (${o.skuId})`}
           renderInput={p => (
             <TextField {...p} size="small" placeholder="Buscar producto…"
               sx={{ '& .MuiOutlinedInput-root': { borderRadius: '12px', backgroundColor: colors.surfaceAlt, '& fieldset': { borderColor: colors.border }, '&.Mui-focused fieldset': { borderColor: '#6366f1' } }, '& input': { color: colors.text } }} />
@@ -198,7 +199,7 @@ function PasoLineas({ lineas, onLineasChange, onNext, onBack, setStockError }) {
         />
         <TextField
           size="small" type="number" label="Cantidad" value={cantidad}
-          onChange={e => setCantidad(Math.max(1, Number(e.target.value)))}
+          onChange={e => setCantidad(e.target.value)}
           inputProps={{ min: 1 }}
           sx={{ width: 100, '& .MuiOutlinedInput-root': { borderRadius: '12px', backgroundColor: colors.surfaceAlt, '& fieldset': { borderColor: colors.border }, '&.Mui-focused fieldset': { borderColor: '#6366f1' } }, '& input': { color: colors.text }, '& label': { color: colors.textSecondary }, '& label.Mui-focused': { color: '#6366f1' } }}
         />
@@ -233,7 +234,7 @@ function PasoLineas({ lineas, onLineasChange, onNext, onBack, setStockError }) {
             }}>
               <Box>
                 <Typography sx={{ fontSize: 13, fontWeight: 600, color: colors.text }}>{l.marca}</Typography>
-                <Typography sx={{ fontSize: 11, color: colors.textSecondary }}>{l.presentacion}</Typography>
+                <Typography sx={{ fontSize: 11, color: colors.textSecondary }}>{l.presentacion}{l.contenidoMl ? ` · ${l.contenidoMl} ml` : ''}</Typography>
               </Box>
               <Typography sx={{ fontSize: 11.5, color: '#8b5cf6', fontFamily: 'monospace', alignSelf: 'center' }}>{l.skuId}</Typography>
               <Typography sx={{ fontSize: 13, fontWeight: 700, color: colors.text, alignSelf: 'center' }}>{l.cantidadSolicitada}</Typography>
@@ -300,7 +301,7 @@ function PasoConfirmacion({ cliente, lineas, onBack, onConfirmar, loading }) {
         <Box sx={{ borderTop: `1px solid ${colors.border}`, pt: 1.5, display: 'flex', flexDirection: 'column', gap: 0.75 }}>
           {lineas.map(l => (
             <Box key={l.skuId} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Typography sx={{ fontSize: 13, color: colors.text }}>{l.marca} <span style={{ color: colors.textSecondary }}>{l.presentacion}</span></Typography>
+              <Typography sx={{ fontSize: 13, color: colors.text }}>{l.marca} <span style={{ color: colors.textSecondary }}>{l.presentacion}{l.contenidoMl ? ` · ${l.contenidoMl} ml` : ''}</span></Typography>
               <Typography sx={{ fontSize: 13, fontWeight: 700, color: colors.text }}>{l.cantidadSolicitada} und</Typography>
             </Box>
           ))}
