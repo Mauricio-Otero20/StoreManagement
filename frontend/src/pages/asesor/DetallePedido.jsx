@@ -11,11 +11,12 @@ import StatusBadge from '../../components/common/StatusBadge';
 import { formatFecha, formatFechaHora, formatCOP } from '../../utils/formatters';
 
 /* ── Timeline de estados ──────────────────────────────────────────────────── */
-const ESTADOS_ORDEN = ['ESPERANDO_RUTA', 'RUTA_ASIGNADA', 'COMPROMETIDO', 'EN_PICKING', 'DESPACHADO', 'ENTREGADO'];
+const ESTADOS_ORDEN = ['ESPERANDO_RUTA', 'RUTA_ASIGNADA', 'COMPROMETIDO', 'EN_PICKING', 'PICKUP', 'DESPACHADO', 'ENTREGADO'];
 const ESTADO_ICON   = {
   ESPERANDO_RUTA: Clock,
   COMPROMETIDO:   CheckCircle,
   EN_PICKING:     Package,
+  PICKUP:         Package,
   DESPACHADO:     Truck,
   ENTREGADO:      CheckCircle,
 };

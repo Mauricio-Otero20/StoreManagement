@@ -60,7 +60,7 @@ export const simAuth = {
       controller.abort();
       return res.data;
     } catch (err) {
-      if (err?.response) {
+      if (err?.response && err.response.status !== 404 && err.response.status !== 401) {
         throw err;
       }
       try {
@@ -324,6 +324,9 @@ api.productos.actualizar = (...args) => _actualizarProducto(...args).then(r => {
 
 const _eliminarProducto = api.productos.eliminar;
 api.productos.eliminar = (...args) => _eliminarProducto(...args).then(r => { invalidateCache('productos.'); return r; });
+
+const _iniciarPicking = api.picking.iniciar;
+api.picking.iniciar = (...args) => _iniciarPicking(...args).then(r => { invalidateCache('picking.'); invalidateCache('pedidos.'); return r; });
 
 const _confirmarPicking = api.picking.confirmar;
 api.picking.confirmar = (...args) => _confirmarPicking(...args).then(r => { invalidateCache('picking.'); invalidateCache('pedidos.'); return r; });

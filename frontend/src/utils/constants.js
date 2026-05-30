@@ -28,11 +28,11 @@ export const HOME_ROUTE_BY_ROL = {
 export const ESTADOS_PEDIDO = {
   ESPERANDO_RUTA: { label: 'Esperando Ruta', color: '#94a3b8', bg: 'rgba(148,163,184,0.12)' },
   RUTA_ASIGNADA:  { label: 'Ruta Asignada',  color: '#6366f1', bg: 'rgba(99,102,241,0.12)'  },
-  COMPROMETIDO:   { label: 'Comprometido',   color: '#3b82f6', bg: 'rgba(59,130,246,0.12)' },
+  COMPROMETIDO:   { label: 'Comprometido',   color: '#0ea5e9', bg: 'rgba(14,165,233,0.12)'  },
   EN_PICKING:     { label: 'En Picking',      color: '#f59e0b', bg: 'rgba(245,158,11,0.12)' },
   PICKUP:         { label: 'Pickup',           color: '#8b5cf6', bg: 'rgba(139,92,246,0.12)' },
   DESPACHADO:     { label: 'Despachado',      color: '#22c55e', bg: 'rgba(34,197,94,0.12)'  },
-  ENTREGADO:      { label: 'Entregado',       color: '#15803d', bg: 'rgba(21,128,61,0.12)'  },
+  ENTREGADO:      { label: 'Entregado',       color: '#0891b2', bg: 'rgba(8,145,178,0.12)'  },
 };
 
 // ── Tipos Excepción — TipoExcepcion enum backend ─────────────────────────────
