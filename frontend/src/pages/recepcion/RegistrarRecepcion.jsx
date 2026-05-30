@@ -18,7 +18,7 @@ const HOY = new Date().toISOString().split('T')[0];
 const UMBRAL_CRITICO_DIAS = 30;
 
 const LINEA_DEFAULT = {
-  skuId: '', marca: '', codigoLote: '',
+  skuId: '', marca: '', presentacion: '', contenidoMl: '', codigoLote: '',
   fechaVencimiento: '', fechaFabricacion: '',
   cantidadRecibida: '', costoUnitarioProducto: '',
 };
@@ -69,12 +69,17 @@ function LineaForm({ linea, idx, onChange, onRemove, productos, disabled, cantMa
       position: 'relative',
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Avatar sx={{ width: 26, height: 26, background: '#6366f1', color: '#fff', fontSize: 12, fontWeight: 900 }}>
-            {idx + 1}
-          </Avatar>
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Typography sx={{ fontSize: 11, fontWeight: 900, color: colors.text, textTransform: 'uppercase' }}>Ingreso SKU</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Avatar sx={{ width: 26, height: 26, background: '#6366f1', color: '#fff', fontSize: 12, fontWeight: 900 }}>
+              {idx + 1}
+            </Avatar>
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+              <Typography sx={{ fontSize: 11, fontWeight: 900, color: colors.text, textTransform: 'uppercase' }}>Ingreso SKU</Typography>
+              {linea.marca && (
+                <Typography sx={{ fontSize: 12, color: colors.textSecondary }}>
+                  {linea.marca}{linea.presentacion ? ` ${linea.presentacion}` : ''}{linea.contenidoMl ? ` · ${linea.contenidoMl} ml` : ''} ({linea.skuId})
+                </Typography>
+              )}
             {critico && !vencido && <Chip label="CRÍTICO" size="small" sx={{ height: 18, fontSize: 8, fontWeight: 800, background: '#fffbeb', color: '#92400e' }} />}
             {vencido && <Chip label="VENCIDO" size="small" sx={{ height: 18, fontSize: 8, fontWeight: 800, background: '#fef2f2', color: '#b91c1c' }} />}
           </Box>
@@ -89,9 +94,9 @@ function LineaForm({ linea, idx, onChange, onRemove, productos, disabled, cantMa
           <Autocomplete
             size="small"
             options={productos}
-            getOptionLabel={(option) => `${option.marca} (${option.skuId})`}
+            getOptionLabel={(option) => `${option.marca} ${option.presentacion || ''}${option.contenidoMl ? ` · ${option.contenidoMl} ml` : ''} (${option.skuId})`}
             value={productos.find(p => p.skuId === linea.skuId) || null}
-            onChange={(_, newValue) => onChange({ ...linea, skuId: newValue?.skuId || '', marca: newValue?.marca || '' })}
+            onChange={(_, newValue) => onChange({ ...linea, skuId: newValue?.skuId || '', marca: newValue?.marca || '', presentacion: newValue?.presentacion || '', contenidoMl: newValue?.contenidoMl || '' })}
             disabled={disabled || !!cantManifiesto}
             renderInput={(params) => (
               <TextField {...params} label="Producto *" sx={inputSx(submitted && !linea.skuId)} />
@@ -165,9 +170,9 @@ export default function RegistrarRecepcion() {
         if (res) {
           setNumManifiesto(res.numeroManifiesto || '');
           if (res.lineas) {
-            const manifestProds = res.lineas.map(l => ({ skuId: l.skuId, marca: l.marca, presentacion: l.presentacion }));
+            const manifestProds = res.lineas.map(l => ({ skuId: l.skuId, marca: l.marca, presentacion: l.presentacion, contenidoMl: l.contenidoMl }));
             setProductos(manifestProds);
-            const prefilled = res.lineas.map(l => ({ ...LINEA_DEFAULT, skuId: l.skuId, marca: l.marca, cantidadManifiesto: l.cantidadEsperada, cantidadRecibida: l.cantidadEsperada, costoUnitarioProducto: '' }));
+            const prefilled = res.lineas.map(l => ({ ...LINEA_DEFAULT, skuId: l.skuId, marca: l.marca, presentacion: l.presentacion || '', contenidoMl: l.contenidoMl || '', cantidadManifiesto: l.cantidadEsperada, cantidadRecibida: l.cantidadEsperada, costoUnitarioProducto: '' }));
             setLineas(prefilled.length > 0 ? prefilled : [{ ...LINEA_DEFAULT }]);
           }
         }

@@ -290,7 +290,7 @@ function DetalleManifiestoModal({ open, manifiesto, onClose }) {
             <Box key={i} sx={{ p: '10px 12px', borderRadius: '10px', background: colors.surfaceAlt, border: `1px solid ${colors.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Box>
                 <Typography sx={{ fontSize: 13, fontWeight: 600, color: colors.text }}>
-                  {l.marca} {l.presentacion}
+                  {l.marca} {l.presentacion}{l.contenidoMl ? ` · ${l.contenidoMl} ml` : ''}
                 </Typography>
                 <Typography sx={{ fontSize: 11, color: colors.textSecondary }}>
                   {l.skuId} | Esperada: {l.cantidadEsperada} | Recibida: {l.cantidadRecibida || 0}
@@ -367,12 +367,15 @@ export default function SupervisorManifiestos() {
   };
 
   // Filtrado local
-  const filtrados = manifiestos.filter(m => {
-    const q = buscar.toLowerCase();
-    const matchBuscar = !q || m.numeroManifiesto?.toLowerCase().includes(q) || m.proveedor?.toLowerCase().includes(q);
-    const matchEstado = !estadoFiltro || m.estado === estadoFiltro;
-    return matchBuscar && matchEstado;
-  });
+  const ESTADO_PRIORITY = { PENDIENTE: 0, RECEPCIONADO_PARCIAL: 1, RECEPCIONADO_TOTAL: 2, RECIBIDO: 3 };
+  const filtrados = manifiestos
+    .filter(m => {
+      const q = buscar.toLowerCase();
+      const matchBuscar = !q || m.numeroManifiesto?.toLowerCase().includes(q) || m.proveedor?.toLowerCase().includes(q);
+      const matchEstado = !estadoFiltro || m.estado === estadoFiltro;
+      return matchBuscar && matchEstado;
+    })
+    .sort((a, b) => (ESTADO_PRIORITY[a.estado] ?? 99) - (ESTADO_PRIORITY[b.estado] ?? 99));
 
   const stats = {
     total: manifiestos.length,
